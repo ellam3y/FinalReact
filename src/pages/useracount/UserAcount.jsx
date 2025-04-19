@@ -1,7 +1,21 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import useAuthStore from "../../Store/authStore"; // أو حسب المسار عندك
+import { useNavigate } from "react-router-dom";
 
 export default function UserAccount() {
+  const { isAuthenticated } = useAuthStore();
+
+  const { logout } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
   return (
     <div className="container mt-5">
       <h2 className="mb-4">👤 حساب المستخدم</h2>
@@ -47,6 +61,12 @@ export default function UserAccount() {
           </NavLink>
         </li>
       </ul>
+
+      {isAuthenticated && (
+        <button onClick={handleLogout} className="btn btn-outline-danger ms-2">
+          تسجيل الخروج
+        </button>
+      )}
 
       {/* هنا يظهر محتوى كل تبويب حسب المسار */}
       <div className="tab-content p-3 border rounded bg-light">

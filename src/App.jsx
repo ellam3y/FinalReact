@@ -1,15 +1,10 @@
 import { Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import useAuthStore from "./Store/authStore";
+
+// الصفحات
 import Home from "./pages/home/Home";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "animate.css";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import Error from "./pages/Error/ErrorPage/Error";
-import "bootstrap/dist/js/bootstrap.min.js";
-import "react-bootstrap";
 import Products from "./pages/Products/Products";
-import Layout from "./pages/Layout/Layout";
 import ProductsDetailes from "./pages/Products/productsDetailes/ProductsDetailes";
 import Checkout from "./pages/checkOut/checkOutPage";
 import ContactUs from "./pages/ContactUs/ContactUs";
@@ -24,9 +19,32 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import OrderHistory from "./pages/useracount/OrderHistory/OrderHistory";
 import Regs from "./pages/regs/Regs";
 import LogIn from "./pages/login/LogIn";
-import ProtectedRoute from "./componants/ProtectedRoute"; // استيراد المكون
+import ProtectedRoute from "./componants/ProtectedRoute";
+import Layout from "./pages/Layout/Layout";
+import Error from "./pages/Error/ErrorPage/Error";
+
+// استايلات
+import "bootstrap/dist/css/bootstrap.min.css";
+import "animate.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "bootstrap/dist/js/bootstrap.min.js";
+import "react-bootstrap";
 
 export default function App() {
+  const { login } = useAuthStore();
+
+  // ✅ مزامنة حالة الدخول مع localStorage بعد الريفريش
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (isAuthenticated && storedUser) {
+      login(storedUser);
+    }
+  }, []);
+
   return (
     <div className="app d-flex flex-column w-100">
       <Routes>
@@ -60,8 +78,10 @@ export default function App() {
           </Route>
         </Route>
 
+        {/* 🧑‍💻 تسجيل الدخول والتسجيل */}
         <Route path="login" element={<LogIn />} />
         <Route path="register" element={<Regs />} />
+
         {/* ❌ صفحة الخطأ */}
         <Route path="*" element={<Error />} />
       </Routes>

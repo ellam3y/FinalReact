@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../Store/authStore";
 
 const Regs = () => {
   const navigate = useNavigate();
+  const { setNotifications } = useAuthStore();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,11 +19,18 @@ const Regs = () => {
       return;
     }
 
-    // تخزين بيانات المستخدم في localStorage
-    const user = { username, email, password };
-    localStorage.setItem("user", JSON.stringify(user));
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    users.push({ username, email, password });
+    localStorage.setItem("users", JSON.stringify(users));
 
-    // إعادة التوجيه إلى صفحة تسجيل الدخول بعد التسجيل الناجح
+    // إضافة إشعار وهمي
+    setNotifications([
+      {
+        message: "تم التسجيل بنجاح. يمكنك الآن تسجيل الدخول.",
+        type: "success",
+      },
+    ]);
+
     navigate("/login");
   };
 
@@ -74,3 +83,4 @@ const Regs = () => {
 };
 
 export default Regs;
+// تم استخدام مكتبة Zustand لإدارة الحالة في التطبيق.
