@@ -1,0 +1,26 @@
+#slider {
+  height: 100vh !important;
+  background-color: #fdf5e6;
+}
+
+#Hero {
+  background-color: #0d2b3a !important;
+  color: var(--backGround);
+}
+#Shop {
+  background-color: var(--backGround);
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+}
+#Shop:hover {
+  background-color: whitesmoke;
+  color: var(--text);
+}
+
+#opinion {
+  background-color: #d2b48c;
+  color: #1e1e1e;
+}
